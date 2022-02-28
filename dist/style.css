@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar {
+    position: fixed;
+    width: 20%;
+    height: 100%;
+    background-color: #950740;
+}
+
+#sidebar p {
+    font-family: "Nova Square";
+    font-size: 20px;
+    padding: 5px;
+}
+
+#showcase {
+    position: relative;
+    width: auto;
+    height: 200px;
+    left: 20%;
+    background-color:#808080;
+}
+
+#image {
+    width: 100%;
+    height: 100%;
+}
+
+#content {
+    position: relative;
+    left: 20%;
+    height: 10000px;
+    background-color: #1A1A1D;
+}
+
+#content p {
+    color: #C3073F;
+    font-family: "Island Moments";
+    font-size: 120px;
+    padding-left: 30px;
+}
+
+#canvas {
+    width: max-content;
+    height: max-content;
+}
+
+body {
+    background-color: aqua;
+}
