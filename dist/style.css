@@ -3,51 +3,97 @@
     padding: 0;
 }
 
-#sidebar {
+:root {
+  --menu_height: 5vh;
+  --tools_width: 20vw;
+  --tools_height: 95vh; /* 100% - menu_height */
+  --content_width: 80vw; /* 100% - tools_width */
+  --menu_color: rgb(52, 52, 66);
+}
+
+#menu {
     position: fixed;
-    width: 20%;
-    height: 100%;
-    background-color: #950740;
+    background-color: var(--menu_color);
+    width: 100vw;
+    height: var(--menu_height);
+	min-width: 600px;
 }
 
-#sidebar p {
-    font-family: "Nova Square";
-    font-size: 20px;
-    padding: 5px;
+#menu button {
+	position: relative;
+	padding-left: 1vw; 
+	padding-right: 1vw; 
+	margin-top: 0.55vh;
+	margin-left: 1vh;
+	font-family: "Roboto";
+	font-style: normal;
+	font-weight: 400;
+	font-size: 3vh;
+	color: rgb(230, 230, 230);
+	background-color: var(--menu_color);
+	border: none;
+	border-radius: 5px;
 }
 
-#showcase {
-    position: relative;
-    width: auto;
-    height: 200px;
-    left: 20%;
-    background-color:#808080;
+
+#menu button:hover {
+	background-color: rgb(28, 28, 36);
+	text-decoration: underline;
 }
 
-#image {
-    width: 100%;
-    height: 100%;
+#menu button:active {
+	background-color: rgb(0, 0, 0);
+}
+
+#tools {
+	position: fixed;
+    background-color: rgb(43, 45, 59);
+	top: var(--menu_height);
+    width: var(--tools_width);
+    height: var(--tools_height);
+}
+
+#tools li {
+	position: relative;
+	text-align: center;
+}
+
+#tools li button {
+	position: relative;
+	font-family: "Roboto";
+	font-style: normal;
+	font-weight: 500;
+	font-size: 4vh;
+	color: rgb(146, 30, 30);
+	margin-top: 0.2vh;
+	padding-left: 1vw; 
+	padding-right: 1vw;
+	background-color: rgb(43, 45, 59);
+	border: none;
+	border-radius: 5px;
+}
+
+#tools li button:hover {
+	background-color: rgb(28, 28, 36);
+	text-decoration: underline;
+}
+
+#tools li button:active {
+	background-color: rgb(0, 0, 0);
+	text-decoration: underline;
 }
 
 #content {
-    position: relative;
-    left: 20%;
-    height: 10000px;
-    background-color: #1A1A1D;
+	position: fixed;
+	background-color: rgb(64, 66, 66);
+	top: var(--menu_height);
+	left: var(--tools_width);
+	width: var(--content_width);
+	height: var(--tools_height);
 }
 
-#content p {
-    color: #C3073F;
-    font-family: "Island Moments";
-    font-size: 120px;
-    padding-left: 30px;
-}
-
-#canvas {
-    width: max-content;
-    height: max-content;
-}
-
-body {
-    background-color: aqua;
+#content canvas {
+	position: relative;
+	width: 100%;
+	height: 100%;
 }

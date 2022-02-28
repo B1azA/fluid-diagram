@@ -3,6 +3,9 @@
 	windows_subsystem = "windows"
 )]
 
+use std::fs::File;
+use std::io::prelude::*;
+
 #[tauri::command]
 fn my_custom_command(message: String) {
 	println!("{}", message);
@@ -22,10 +25,19 @@ fn hello_command() -> Message {
 	}
 }
 
+#[tauri::command]
+fn create_file() {
+	let mut file = File::create("fooooooooo.txt").unwrap();
+	file.write_all(b"Ahoj ajshfgjshfgjhsgjh").unwrap();
+
+
+	println!("created");
+}
+
 fn main() {
 	println!("Welcome to FluidDiagram!");
 	tauri::Builder::default()
-		.invoke_handler(tauri::generate_handler![my_custom_command, hello_command])
+		.invoke_handler(tauri::generate_handler![my_custom_command, hello_command, create_file])
     	.run(tauri::generate_context!())
     	.expect("error while running tauri application");
   	println!("{}", "hello mi amigo!!!");
