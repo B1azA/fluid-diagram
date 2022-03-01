@@ -6,9 +6,11 @@
 :root {
   --menu_height: 5vh;
   --tools_width: 20vw;
-  --tools_height: 95vh; /* 100% - menu_height */
+  --content_height: 95vh; /* 100% - menu_height */
   --content_width: 80vw; /* 100% - tools_width */
   --menu_color: rgb(52, 52, 66);
+  --scrollbar_width: 2vw;
+  --tools_left: 5vw; /* 100% - scrollbar_width */
 }
 
 #menu {
@@ -17,14 +19,15 @@
     width: 100vw;
     height: var(--menu_height);
 	min-width: 600px;
+	z-index: 9;
 }
 
 #menu button {
 	position: relative;
-	padding-left: 1vw; 
-	padding-right: 1vw; 
-	margin-top: 0.55vh;
-	margin-left: 1vh;
+	margin-left: 0.1rem;
+	padding-left: 0.3rem;
+	padding-right: 0.3rem;
+	height: 100%;
 	font-family: "Roboto";
 	font-style: normal;
 	font-weight: 400;
@@ -41,21 +44,35 @@
 	text-decoration: underline;
 }
 
-#menu button:active {
-	background-color: rgb(0, 0, 0);
+#menu button:focus {
+	background-color: rgb(143, 137, 137);
+	text-decoration: underline;
 }
+
+/* hide scrollbars */
+
+html {
+	scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
 
 #tools {
 	position: fixed;
     background-color: rgb(43, 45, 59);
 	top: var(--menu_height);
     width: var(--tools_width);
-    height: var(--tools_height);
+    height: var(--content_height);
+	min-height: var(--content_height);
 }
 
 #tools li {
 	position: relative;
 	text-align: center;
+	list-style: none;
 }
 
 #tools li button {
@@ -64,13 +81,13 @@
 	font-style: normal;
 	font-weight: 500;
 	font-size: 4vh;
-	color: rgb(146, 30, 30);
-	margin-top: 0.2vh;
-	padding-left: 1vw; 
-	padding-right: 1vw;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+	color: rgb(184, 184, 184);
 	background-color: rgb(43, 45, 59);
 	border: none;
 	border-radius: 5px;
+	width: 100%;
 }
 
 #tools li button:hover {
@@ -79,7 +96,10 @@
 }
 
 #tools li button:active {
-	background-color: rgb(0, 0, 0);
+}
+
+#tools li button:focus {
+	background-color: rgb(71, 68, 68);
 	text-decoration: underline;
 }
 
@@ -89,7 +109,7 @@
 	top: var(--menu_height);
 	left: var(--tools_width);
 	width: var(--content_width);
-	height: var(--tools_height);
+	height: var(--content_height);
 }
 
 #content canvas {

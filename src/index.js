@@ -33,15 +33,17 @@ function resize_canvas() {
     canvas.height = h * ratio;
     canvas.style.width = w + "px";
     canvas.style.height = h + "px";
-    console.log(canvas.width, canvas.height);
 }
 
 setup();
 
-let button = document.getElementById("file");
-
-button.onclick = function() {
-    invoke("create_file");
+var file = document.getElementById("file");
+file.onclick = function() {
+    invoke("show_menu");
+}
+var project = document.getElementById("project");
+project.onclick = function () {
+    invoke("hide_menu");
 }
 
 window.addEventListener("resize", resize_canvas());
