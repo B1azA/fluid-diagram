@@ -10,6 +10,8 @@ use std::io::prelude::*;
 use std::process::Command;
 use tauri::{Manager};
 
+mod canvas;
+
 #[derive(serde::Serialize)]
 struct Message {
 	message: String,
