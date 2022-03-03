@@ -8,9 +8,8 @@ export class Point {
     }
 }
 
-function get_ratio() {
-    var ctx = document.getElementById("canvas").getContext("2d"),
-        dpr = window.devicePixelRatio || 1,
+/* function get_ratio() {
+    var dpr = window.devicePixelRatio || 1,
         bsr = ctx.webkitBackingStorePixelRatio ||
             ctx.mozBackingStorePixelRatio ||
             ctx.msBackingStorePixelRatio ||
@@ -18,26 +17,66 @@ function get_ratio() {
             ctx.backingStorePixelRatio || 1;
 
     return dpr / bsr;
-}
+} */
 
 function resize_canvas() {
-    canvas.width = content.style.width;
-    canvas.height = content.style.height;
-
     var w = canvas.clientWidth;
     var h = canvas.clientHeight;
-    var ratio = get_ratio();
-    canvas.width = w * ratio;
-    canvas.height = h * ratio;
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    canvas.width = w;
+    canvas.height = h;
 }
 
 var mouse_pos = new Point(0, 0);
+var mouse_buttons = [false, false, false];
+var wheel = 0;
 
 function update_mouse_pos(event) {
     var rect = canvas.getBoundingClientRect();
     mouse_pos = new Point(event.clientX - rect.left, event.clientY - rect.top);
+}
+
+function update_mouse_buttons_up(event) {
+    switch (event.button) {
+        case 0:
+            mouse_buttons[0] = false;
+            break;
+        case 1:
+            mouse_buttons[1] = false;
+            break;
+        case 2:
+            mouse_buttons[2] = false;
+            break;
+    }
+}
+
+function update_mouse_buttons_down(event) {
+    switch (event.button) {
+        case 0:
+            mouse_buttons[0] = true;
+            break;
+        case 1:
+            mouse_buttons[1] = true;
+            break;
+        case 2:
+            mouse_buttons[2] = true;
+            break;
+    }
+}
+
+function update_wheel(event) {
+    wheel += event.deltaY;
+}
+
+export function get_mouse_wheel() {
+    return wheel;
+}
+
+export function get_canvas_size() {
+    return new Point(canvas.clientWidth, canvas.clientHeight);
+}
+
+export function get_mouse_buttons() {
+    return mouse_buttons;
 }
 
 export function get_mouse_position() {
@@ -47,7 +86,7 @@ export function get_mouse_position() {
 export function is_mouse_on_canvas() {
     var is = false;
     var pos = mouse_pos;
-    if (pos.x >= 0 && pos.y >= 0 && pos.x <= canvas.width && pos.y <= canvas.height) {
+    if (pos.x >= 0 && pos.y >= 0) {
         is = true;
     }
 
@@ -92,5 +131,10 @@ export function draw_text_background(text, color, background_color, pos, size) {
     draw_text(text, color, pos, size);
 }
 
-addEventListener("resize", resize_canvas());
-addEventListener("mousemove", update_mouse_pos);
+resize_canvas();
+const content = document.getElementById("content");
+addEventListener("resize", resize_canvas);
+content.addEventListener("mousemove", update_mouse_pos);
+addEventListener("mouseup", update_mouse_buttons_up);
+addEventListener("mousedown", update_mouse_buttons_down);
+addEventListener("wheel", update_wheel);
