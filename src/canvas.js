@@ -117,6 +117,13 @@ export function measure_text(text, size) {
     return new Point(metrics.width, metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent);
 }
 
+export function measure_text_background(text, size) {
+    ctx.font = size + "px serif";
+    ctx.textAlign = "middle";
+    var metrics = measure_text(text);
+    return new Point(metrics.x + size / 2.5, metrics.y);
+}
+
 export function draw_text(text, color, pos, size) {
     ctx.fillStyle = color;
     ctx.textAlign = "middle";
