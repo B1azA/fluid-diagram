@@ -101,7 +101,7 @@ function update() {
     }
 
     scale += wheel_delta / 1000;
-    if (scale <= 0) {
+    if (scale < 0.1) {
         scale = 0.1;
     }
 
