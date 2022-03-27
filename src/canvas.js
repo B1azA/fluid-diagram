@@ -101,7 +101,7 @@ export function draw() {
     ctx.fillStyle = "#FF0000";
     ctx.fillRect(0, 0, 150, 75);
     ctx.fillStyle = "#000000";
-    ctx.font = "48px Roboto";
+    ctx.font = "48px Arial"; // bug with Roboto
     ctx.fillText("Hello", 10, 100, 50);
 }
 
@@ -111,14 +111,14 @@ export function draw_rectangle(color, pos, width, height) {
 }
 
 export function measure_text(text, size) {
-    ctx.font = size + "px Roboto";
+    ctx.font = size + "px Arial";
     ctx.textAlign = "middle";
     var metrics = ctx.measureText(text);
     return new Point(metrics.width, metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent);
 }
 
 export function measure_text_background(text, size) {
-    ctx.font = size + "px Roboto";
+    ctx.font = size + "px Arial";
     ctx.textAlign = "middle";
     var metrics = measure_text(text);
     return new Point(metrics.x + size / 2.5, metrics.y);
@@ -127,7 +127,7 @@ export function measure_text_background(text, size) {
 export function draw_text(text, color, pos, size) {
     ctx.fillStyle = color;
     ctx.textAlign = "middle";
-    ctx.font = size + "px Roboto";
+    ctx.font = size + "px Arial";
     var metrics = measure_text(text, size);
     ctx.fillText(text, pos.x + size / 5, pos.y + metrics.y - size / 3.333);
 }
