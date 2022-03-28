@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import "./setup.js"
-import "./renderer.js"
+import "./app_loops.js"
 
     // -------------------- MAIN CODE -------------------- \\
 

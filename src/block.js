@@ -1,7 +1,7 @@
-import { Point } from "./canvas.js";
-import * as canvas from "./canvas.js";
+import { Point } from "./canvas.js"
+import { canvas, scale, offset, mouse_pos } from "./app_loops.js"
 
-class BlockPart {
+export class BlockPart {
     constructor(width, height, new_line) {
         this.width = width;
         this.height = height;
@@ -13,7 +13,7 @@ class BlockPart {
     }
 }
 
-class Line extends BlockPart {
+export class Line extends BlockPart {
     constructor(text, new_line, color = "#FF0000") {
         var size = canvas.measure_text_background(text, Block.size * scale);
         super(size.x, size.y, new_line);
@@ -27,8 +27,35 @@ class Line extends BlockPart {
     }
 }
 
+export class Form extends BlockPart {
+    constructor(new_line, color = "#FF0000") {
+        var size = canvas.measure_text_background("000000", Block.size * scale);
+        super(size.x, size.y, new_line);
+        this.color = color;
+        this.text = "000000";
+        this.is_mouse_on = false;
+    }
 
-class Block {
+    draw(pos) {
+        canvas.draw_text_background(this.text, "#000000", this.color,
+        new Point(pos.x * scale + offset.x * scale, pos.y * scale + offset.y * scale), Block.size * scale);
+
+        
+        var rec_pos = new Point(pos.x * scale + offset.x * scale, pos.y * scale + offset.y * scale);
+        var width = this.width * scale;
+        var height = this.height * scale;
+        
+        var left_side = rec_pos.x;
+        var right_side = rec_pos.x + width;
+        var top_side = rec_pos.y;
+        var bottom_side = rec_pos.y + height;
+        
+        this.is_mouse_on = mouse_pos.x > left_side && mouse_pos.x < right_side &&
+            mouse_pos.y - 1 > top_side && mouse_pos.y < bottom_side;
+    }
+}
+
+export class Block {
     constructor(pos) {
         this.pos = new Point(pos.x * scale, pos.y * scale);
         this.fullsize = new Point(0, 0);
@@ -89,7 +116,7 @@ class Block {
             }
         }
 
-        for (var i = 1; i < this.parts.length - 1; i++) {
+        for (var i = 1; i < this.parts.length; i++) {
             var part = this.parts[i];
             if (part.new_line) {
                 move.y += (part.height);
@@ -123,89 +150,7 @@ class Block {
         var top_side = rec_pos.y;
         var bottom_side = rec_pos.y + height;
 
-        if (mouse_pos.x > left_side && mouse_pos.x < right_side && 
-            mouse_pos.y - 1 > top_side && mouse_pos.y < bottom_side) {
-            return true;
-        }
-        return false;
+        return mouse_pos.x > left_side && mouse_pos.x < right_side &&
+            mouse_pos.y - 1 > top_side && mouse_pos.y < bottom_side;
     }
 }
-
-var scale = 1.5;
-var offset = new Point(0, 0);
-
-var blocks = [];
-
-function draw() {
-    canvas.clear();
-    blocks.forEach(block => {
-        block.draw();
-    });
-
-    canvas.draw_text("x: " + offset.x + "; " + "y: " + offset.y, "white", 
-        new Point(canvas.get_canvas_size().x - canvas.measure_text("x: " + offset.x + "; " + "y: " + offset.y + "00", 20).x, 0),
-        20);
-    canvas.draw_text("scale: " + scale.toFixed(2), "white",
-        new Point(canvas.get_canvas_size().x - canvas.measure_text("scale: " + scale.toFixed(2) + "00", 20).x, 
-            canvas.measure_text("scale: " + scale.toFixed(2), 20).y), 20);
-    canvas.draw_text("m_pos: " + mouse_pos.x.toFixed(2) + "; " + mouse_pos.y.toFixed(2), "white",
-        new Point(canvas.get_canvas_size().x -
-            canvas.measure_text("m_pos: " + mouse_pos.x.toFixed(2) + "; " + mouse_pos.y.toFixed(2) + "00", 20).x,
-            canvas.measure_text("m_pos: " + mouse_pos.x.toFixed(2) + "; " + mouse_pos.y.toFixed(2), 20).y + 20), 20);
-}
-
-var mouse_pos = canvas.get_mouse_position();
-var last_mouse_pos = new Point(0, 0);
-var mouse_delta = new Point(0, 0);
-var wheel = canvas.get_mouse_wheel();
-var last_wheel = 0;
-var wheel_delta = 0;
-
-function update() {
-    mouse_pos = canvas.get_mouse_position();
-    mouse_delta = new Point(mouse_pos.x - last_mouse_pos.x, mouse_pos.y - last_mouse_pos.y);
-    last_mouse_pos = mouse_pos;
-    wheel = canvas.get_mouse_wheel()
-    wheel_delta = wheel - last_wheel;
-    last_wheel = wheel;
-
-    if (canvas.get_mouse_buttons()[1] === true) {
-        offset.x += mouse_delta.x / scale;
-        offset.y += mouse_delta.y / scale;
-    }
-
-    scale += wheel_delta / 1000;
-    if (scale < 0.1) {
-        scale = 0.1;
-    }
-
-    blocks.forEach(block => {
-        if (block.is_mouse_on()) {
-            block.parts.forEach(part => {
-                part.color = "#F0F000";
-            });
-        } else {
-            block.parts.forEach(part => {
-                part.color = "#FF0000";
-            });
-        }
-    })
-}
-
-// _________________________ SETUP _________________________ \\
-scale = 1;
-
-blocks[0] = new Block(new Point(0, 0));
-blocks[0].add_part(new Line("main", false));
-blocks[0].add_part(new Line("do", false));
-blocks[0].add_part(new Line("do", true));
-blocks[0].add_part(new Line("if", false));
-
-blocks[1] = new Block(new Point(100, 100));
-blocks[1].add_part(new Line("main", false));
-blocks[1].add_part(new Line("do", false));
-blocks[1].add_part(new Line("do", true));
-blocks[1].add_part(new Line("if", false));
-
-setInterval(draw, 16);
-setInterval(update, 16);
